@@ -1,0 +1,164 @@
+[
+  {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "origin": {
+      "id": "1",
+      "name": "Tehran"
+    },
+    "destination": {
+      "id": "2",
+      "name": "Sananndaj"
+    },
+    "startDate": "2024-12-01T00:00:00.000Z",
+    "endDate": "2024-12-05T00:00:00.000Z",
+    "title": "تور کردستان",
+    "fleetVehicle": "Bus",
+    "price": 105000,
+    "availableSeats": 25,
+    "insurance": true,
+    "options": [
+      "راهنمای تور",
+      "ساحل اختصاصی",
+      "صبحانه، نهار و شام"
+    ],
+    "image": "/static/images/kurdestanTour.png"
+  },
+  {
+    "id": "b2c3d4e5-f678-90ab-cdef-234567890abc",
+    "origin": {
+      "id": "2",
+      "name": "Sanandaj"
+    },
+    "destination": {
+      "id": "3",
+      "name": "Madrid"
+    },
+    "startDate": "2024-12-10T00:00:00.000Z",
+    "endDate": "2024-12-15T00:00:00.000Z",
+    "title": "تور مادرید",
+    "fleetVehicle": "Van",
+    "price": 240000,
+    "availableSeats": 15,
+    "insurance": false,
+    "options": [
+      "راهنمای تور",
+      "نهار و شام"
+    ],
+    "image": "/static/images/madridTour.png"
+  },
+  {
+    "id": "c3d4e5f6-7890-abcd-ef12-34567890abcd",
+    "origin": {
+      "id": "4",
+      "name": "Isfahan"
+    },
+    "destination": {
+      "id": "5",
+      "name": "sulaymaniyahTour"
+    },
+    "startDate": "2024-12-20T00:00:00.000Z",
+    "endDate": "2024-12-25T00:00:00.000Z",
+    "title": "سلیمانیه",
+    "fleetVehicle": "SUV",
+    "price": 35000,
+    "availableSeats": 40,
+    "insurance": true,
+    "options": [
+      "نهار و صبحانه",
+      "هفل پنج ستاره"
+    ],
+    "image": "/static/images/sulaymaniyahTour.png"
+  },
+  {
+    "id": "d4e5f678-90ab-cdef-1234-567890abcdef",
+    "origin": {
+      "id": "1",
+      "name": "Tehran"
+    },
+    "destination": {
+      "id": "6",
+      "name": "Hewler"
+    },
+    "startDate": "2024-12-20T00:00:00.000Z",
+    "endDate": "2024-12-25T00:00:00.000Z",
+    "title": "هولر",
+    "fleetVehicle": "SUV",
+    "price": 105000,
+    "availableSeats": 20,
+    "insurance": false,
+    "options": [
+      "نهار و صبحانه",
+      "هفل پنج ستاره"
+    ],
+    "image": "/static/images/arbilTour.png"
+  },
+  {
+    "id": "e5f67890-abcd-ef12-3456-7890abcdef12",
+    "origin": {
+      "id": "1",
+      "name": "Tehran"
+    },
+    "destination": {
+      "id": "7",
+      "name": "Mazandaran"
+    },
+    "startDate": "2025-10-20T00:00:00.000Z",
+    "endDate": "2024-11-25T00:00:00.000Z",
+    "title": "تور مازندران",
+    "fleetVehicle": "SUV",
+    "price": 185000,
+    "availableSeats": 300,
+    "insurance": true,
+    "options": [
+      "نهار و صبحانه",
+      "هفل پنج ستاره"
+    ],
+    "image": "/static/images/mazandaranTour.png"
+  },
+  {
+    "id": "f67890ab-cdef-1234-5678-90abcdef1234",
+    "origin": {
+      "id": "1",
+      "name": "Tehran"
+    },
+    "destination": {
+      "id": "8",
+      "name": "offRoad Center"
+    },
+    "startDate": "2024-12-20T00:00:00.000Z",
+    "endDate": "2024-12-25T00:00:00.000Z",
+    "title": "تور آفرود",
+    "fleetVehicle": "Airplane",
+    "price": 35000,
+    "availableSeats": 25,
+    "insurance": true,
+    "options": [
+      "نهار و صبحانه",
+      "هفل پنج ستاره"
+    ],
+    "image": "/static/images/offroadTour.png"
+  },
+  {
+    "id": "67890abc-def1-2345-6789-0abcdef12345",
+    "origin": {
+      "id": "1",
+      "name": "Tehran"
+    },
+    "destination": {
+      "id": "9",
+      "name": "Italy"
+    },
+    "startDate": "2024-11-20T00:00:00.000Z",
+    "endDate": "2024-12-25T00:00:00.000Z",
+    "title": "تور ایتالیا",
+    "fleetVehicle": "Airplane",
+    "price": 18000,
+    "availableSeats": 20,
+    "insurance": true,
+    "options": [
+      "نهار و صبحانه",
+      "هفل پنج ستاره"
+    ],
+    "image": "/static/images/italyTour.png"
+  }
+]

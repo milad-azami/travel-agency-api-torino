@@ -1,0 +1,730 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Turino Tour and Travel Agency API",
+		"version": "1.0.0",
+		"description": "API documentation for the Turino Tour and Travel Agency. This API allows users to authenticate, view tours, manage profiles, and place orders."
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000",
+			"description": "Local server"
+		}
+	],
+	"tags": [
+		{
+			"name": "Auth",
+			"description": "Authentication related endpoints"
+		},
+		{
+			"name": "Tours",
+			"description": "Tour management endpoints"
+		},
+		{
+			"name": "User",
+			"description": "User profile and related endpoints"
+		},
+		{
+			"name": "Basket",
+			"description": "managing basket content and what tour user wants to buy"
+		},
+		{
+			"name": "Order",
+			"description": "Payment for the tour that is added to basket"
+		}
+	],
+	"components": {
+		"securitySchemes": {
+			"BearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"schemas": {
+			"SendOtpRequest": {
+				"type": "object",
+				"required": ["mobile"],
+				"properties": {
+					"mobile": {
+						"type": "string",
+						"example": "09170567571",
+						"description": "User's mobile number to receive OTP"
+					}
+				}
+			},
+			"SendOtpResponse": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "کد تایید با موفقیت ارسال شد",
+						"description": "Confirmation message"
+					},
+					"code": {
+						"type": "string",
+						"example": "85146",
+						"description": "OTP code (remove in production)"
+					}
+				}
+			},
+			"CheckOtpRequest": {
+				"type": "object",
+				"required": ["mobile", "code"],
+				"properties": {
+					"mobile": {
+						"type": "string",
+						"example": "09170567571",
+						"description": "User's mobile number"
+					},
+					"code": {
+						"type": "string",
+						"example": "466400",
+						"description": "OTP code received by the user"
+					}
+				}
+			},
+			"CheckOtpResponse": {
+				"type": "object",
+				"properties": {
+					"accessToken": {
+						"type": "string",
+						"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+						"description": "JWT access token"
+					},
+					"refreshToken": {
+						"type": "string",
+						"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+						"description": "JWT refresh token"
+					},
+					"user": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "integer",
+								"example": 1,
+								"description": "User ID"
+							},
+							"first_name": {
+								"type": "string",
+								"example": "John",
+								"description": "User's first name"
+							},
+							"last_name": {
+								"type": "string",
+								"example": "Doe",
+								"description": "User's last name"
+							},
+							"mobile": {
+								"type": "string",
+								"example": "09180597671",
+								"description": "User's mobile number"
+							}
+						}
+					}
+				}
+			},
+			"RefreshTokenRequest": {
+				"type": "object",
+				"required": ["refreshToken"],
+				"properties": {
+					"refreshToken": {
+						"type": "string",
+						"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+						"description": "JWT refresh token"
+					}
+				}
+			},
+			"RefreshTokenResponse": {
+				"type": "object",
+				"properties": {
+					"accessToken": {
+						"type": "string",
+						"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+						"description": "New JWT access token"
+					}
+				}
+			},
+			"Tour": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"example": "6728b58792a8532154045d46",
+						"description": "Tour ID"
+					},
+					"origin": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"example": "1",
+								"description": "Origin location ID"
+							},
+							"name": {
+								"type": "string",
+								"example": "Tehran",
+								"description": "Origin location name"
+							}
+						}
+					},
+					"destination": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"example": "2",
+								"description": "Destination location ID"
+							},
+							"name": {
+								"type": "string",
+								"example": "Isfahan",
+								"description": "Destination location name"
+							}
+						}
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date",
+						"example": "2024-12-01",
+						"description": "Start date of the trip (ISO format)"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date",
+						"example": "2024-12-05",
+						"description": "End date of the trip (ISO format)"
+					},
+					"title": {
+						"type": "string",
+						"example": "Historic Isfahan Tour",
+						"description": "Title of the tour"
+					},
+					"fleetVehicle": {
+						"type": "string",
+						"example": "Bus",
+						"description": "Type of vehicle used for the tour"
+					},
+					"price": {
+						"type": "number",
+						"example": 10000,
+						"description": "Price of the tour"
+					},
+					"availableSeats": {
+						"type": "integer",
+						"example": 10,
+						"description": "Number of available seats"
+					},
+					"insurance": {
+						"type": "string",
+						"example": "Comprehensive",
+						"description": "Insurance details"
+					},
+					"options": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"example": "Guide"
+						},
+						"description": "Additional options included in the tour"
+					}
+				}
+			},
+			"UserProfile": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"example": "string",
+						"description": "User ID"
+					},
+					"mobile": {
+						"type": "string",
+						"example": "0988888888",
+						"description": "User's mobile number"
+					},
+					"email": {
+						"type": "string",
+						"example": "example@gmail.com",
+						"description": "User's email address"
+					},
+					"firstName": {
+						"type": "string",
+						"example": "John",
+						"description": "User's first name"
+					},
+					"lastName": {
+						"type": "string",
+						"example": "Doe",
+						"description": "User's last name"
+					},
+					"gender": {
+						"type": "string",
+						"enum": ["male", "female"],
+						"example": "male",
+						"description": "User's gender"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date",
+						"example": "1990-01-01",
+						"description": "User's birth date (ISO format)"
+					},
+					"nationalCode": {
+						"type": "string",
+						"example": "3730798568",
+						"description": "User's national code"
+					},
+					"paymenty": {
+						"type": "object",
+						"properties": {
+							"shaba_code": {
+								"type": "string",
+								"example": "string",
+								"description": "Shaba code"
+							},
+							"debitCard_code": {
+								"type": "string",
+								"example": "string",
+								"description": "Debit card code"
+							},
+							"accountIdentifier": {
+								"type": "string",
+								"example": "string",
+								"description": "Account identifier"
+							}
+						}
+					}
+				}
+			},
+			"EditUserProfileRequest": {
+				"type": "object",
+				"required": [
+					"mobile",
+					"email",
+					"firstName",
+					"lastName",
+					"gender",
+					"birthDate",
+					"nationalCode",
+					"payment"
+				],
+				"properties": {
+					"mobile": {
+						"type": "string",
+						"example": "0988888888",
+						"description": "User's mobile number"
+					},
+					"email": {
+						"type": "string",
+						"example": "example@gmail.com",
+						"description": "User's email address"
+					},
+					"firstName": {
+						"type": "string",
+						"example": "John",
+						"description": "User's first name"
+					},
+					"lastName": {
+						"type": "string",
+						"example": "Doe",
+						"description": "User's last name"
+					},
+					"gender": {
+						"type": "string",
+						"enum": ["male", "female"],
+						"example": "male",
+						"description": "User's gender"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date",
+						"example": "2022-10-02",
+						"description": "User's birth date (ISO format)"
+					},
+					"nationalCode": {
+						"type": "integer",
+						"example": 3730798568,
+						"description": "User's national code"
+					},
+					"payment": {
+						"type": "object",
+						"required": ["shaba_code", "debitCard_code", "accountIdentifier"],
+						"properties": {
+							"shaba_code": {
+								"type": "string",
+								"example": "string",
+								"description": "Shaba code"
+							},
+							"debitCard_code": {
+								"type": "string",
+								"example": "string",
+								"description": "Debit card code"
+							},
+							"accountIdentifier": {
+								"type": "string",
+								"example": "string",
+								"description": "Account identifier"
+							}
+						}
+					}
+				}
+			},
+			"EditUserProfileResponse": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "تغییرات با موفقیت ثبت شد",
+						"description": "Confirmation message"
+					}
+				}
+			},
+			"UserToursResponse": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Tour"
+				}
+			},
+			"UserTransactionsResponse": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string",
+							"example": "1",
+							"description": "Transaction ID"
+						},
+						"type": {
+							"type": "string",
+							"example": "Purchase",
+							"description": "Type of transaction"
+						},
+						"amount": {
+							"type": "number",
+							"example": 10000,
+							"description": "Transaction amount"
+						},
+						"created_at": {
+							"type": "string",
+							"format": "date-time",
+							"example": "2024-05-01T12:34:56Z",
+							"description": "Transaction creation date"
+						}
+					}
+				}
+			},
+			"OrderRequest": {
+				"type": "object",
+				"required": [
+					"nationalCode",
+					"fullName",
+					"gender",
+					"birthDate"
+				],
+				"properties": {
+					"nationalCode": {
+						"type": "string",
+						"example": "3720878654",
+						"description": "User's national code"
+					},
+					"fullName": {
+						"type": "string",
+						"example": "John Doe",
+						"description": "User's full name"
+					},
+					"gender": {
+						"type": "string",
+						"enum": ["male", "female"],
+						"example": "male",
+						"description": "User's gender"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date",
+						"example": "2022-10-10",
+						"description": "User's birth date (ISO format)"
+					}
+				}
+			},
+			"OrderResponse": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "تور با موفقیت خریداری شد",
+						"description": "Confirmation message"
+					}
+				}
+			},
+			"Error": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "Error message",
+						"description": "Error message"
+					}
+				}
+			}
+		}
+	},
+	"security": [
+		{
+			"BearerAuth": []
+		}
+	],
+	"paths": {
+		"/auth/send-otp": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "Send OTP to user's mobile",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SendOtpRequest"
+							}
+						}
+					}
+				},
+				"responses": {},
+				"security": []
+			}
+		},
+		"/auth/check-otp": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "Check OTP and authenticate user",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CheckOtpRequest"
+							}
+						}
+					}
+				},
+				"responses": {},
+
+				"security": []
+			}
+		},
+		"/auth/refresh-token": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "Refresh JWT access token",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RefreshTokenRequest"
+							}
+						}
+					}
+				},
+				"responses": {},
+
+				"security": []
+			}
+		},
+		"/tour": {
+			"get": {
+				"tags": ["Tours"],
+				"summary": "Get list of tours with optional filters",
+				"parameters": [
+					{
+						"in": "query",
+						"name": "destinationId",
+						"schema": {
+							"type": "string"
+						},
+						"description": "ID for required destination"
+					},
+					{
+						"in": "query",
+						"name": "originId",
+						"schema": {
+							"type": "string"
+						},
+						"description": "ID for required origin"
+					},
+					{
+						"in": "query",
+						"name": "startDate",
+						"schema": {
+							"type": "string",
+							"format": "date"
+						},
+						"description": "ISO string date format of beginning of trip"
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"schema": {
+							"type": "string",
+							"format": "date"
+						},
+						"description": "ISO string date format of end of trip"
+					}
+				],
+				"responses": {},
+
+				"security": []
+			}
+		},
+		"/tour/{tourId}": {
+			"get": {
+				"tags": ["Tours"],
+				"summary": "Get tour details by ID",
+				"parameters": [
+					{
+						"in": "path",
+						"name": "tourId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ID of the tour to retrieve"
+					}
+				],
+				"responses": {},
+
+				"security": []
+			}
+		},
+		"/user/profile": {
+			"get": {
+				"tags": ["User"],
+				"summary": "Get user profile",
+				"responses": {},
+
+				"security": [
+					{
+						"BearerAuth": []
+					}
+				]
+			},
+			"put": {
+				"tags": ["User"],
+				"summary": "Edit user profile",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditUserProfileRequest"
+							}
+						}
+					}
+				},
+				"responses": {},
+
+				"security": [
+					{
+						"BearerAuth": []
+					}
+				]
+			}
+		},
+		"/user/tours": {
+			"get": {
+				"tags": ["User"],
+				"summary": "Get tours associated with the user",
+				"responses": {},
+
+				"security": [
+					{
+						"BearerAuth": []
+					}
+				]
+			}
+		},
+		"/user/transactions": {
+			"get": {
+				"tags": ["User"],
+				"summary": "Get user's transactions",
+				"responses": {},
+
+				"security": [
+					{
+						"BearerAuth": []
+					}
+				]
+			}
+		},
+		"/order": {
+			"post": {
+				"tags": ["Order"],
+				"summary": "Order and payment for basket content",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/OrderRequest"
+							}
+						}
+					}
+				},
+				"responses": {},
+
+				"security": [
+					{
+						"BearerAuth": []
+					}
+				]
+			}
+		},
+		"/basket": {
+			"get": {
+				"tags": ["Basket"],
+				"summary": "Get basket content",
+				"responses": {},
+
+				"security": [
+					{
+						"BearerAuth": []
+					}
+				]
+			}
+		},
+		"/basket/{tourId}": {
+			"put": {
+				"tags": ["Basket"],
+				"summary": "Put tour in basket",
+				"parameters": [
+					{
+						"in": "path",
+						"name": "tourId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "ID of the tour to retrieve"
+					}
+				],
+				"responses": {},
+
+				"security": [
+					{
+						"BearerAuth": []
+					}
+				]
+			}
+		},
+		"/truncate": {
+			"get": {
+				"tags": ["Truncate"],
+				"summary": "Reset data of database if some issue found in APi behavior",
+				"responses": {},
+
+				"security": []
+			}
+		}
+	}
+}
