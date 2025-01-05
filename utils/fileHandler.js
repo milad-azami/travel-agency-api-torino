@@ -1,7 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const dataDirectory = path.join(__dirname, '..', 'DB');
+// const dataDirectory = path.join(__dirname, '..', 'DB');
+const dataDirectory = path.join("/tmp");
 
 const readData = async (filename) => {
   try {
